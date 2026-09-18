@@ -32,28 +32,66 @@ const interviewReportSchema = z.object({
     title: z.string().describe("The title of the job for which the interview report is generated"),
 })
 
-async function generateInterviewReport({ resume, selfDescription, jobDescription }) {
+async function generateInterviewReport({
+    resume,
+    selfDescription,
+    jobDescription,
+    jobRole,
+    experienceLevel,
+    difficulty
+}) {
 
+    const prompt = `
+Generate an AI-powered interview report for a candidate with the following details:
 
-    const prompt = `Generate an interview report for a candidate with the following details:
-                        Resume: ${resume}
-                        Self Description: ${selfDescription}
-                        Job Description: ${jobDescription}
-`
+Resume:
+${resume}
+
+Self Description:
+${selfDescription}
+
+Job Description:
+${jobDescription}
+
+Target Job Role:
+${jobRole}
+
+Experience Level:
+${experienceLevel}
+
+Interview Difficulty:
+${difficulty}
+
+IMPORTANT INSTRUCTIONS:
+
+1. Generate interview questions specifically for the selected Job Role: ${jobRole}.
+2. Adjust the technical depth according to the Experience Level: ${experienceLevel}.
+3. Adjust the difficulty according to the selected Difficulty: ${difficulty}.
+4. Easy = basic concepts and straightforward questions.
+5. Medium = practical concepts, problem-solving and moderate technical depth.
+6. Hard = advanced concepts, real-world scenarios, debugging, system design and challenging problem-solving.
+7. Do not generate generic questions unrelated to the selected job role.
+8. The interview should contain a realistic mixture of technical, behavioral and project-related questions.
+9. Questions should be relevant to the candidate's resume and job description.
+10. Generate a useful preparation plan based on the candidate's weaknesses.
+
+Return the response strictly according to the provided JSON schema.
+`;
 
     const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: prompt,
-        config: {
-            responseMimeType: "application/json",
-            responseSchema: zodToJsonSchema(interviewReportSchema),
-        }
-    })
-
-    return JSON.parse(response.text)
+    model: "gemini-3-flash-preview",
+    contents: prompt,
+    config: {
+        responseMimeType: "application/json",
+        responseSchema: zodToJsonSchema(interviewReportSchema),
+    }
+})
 
 
+return JSON.parse(response.text)
 }
+
+
 
 
 
@@ -106,6 +144,7 @@ async function generateResumePdf({ resume, selfDescription, jobDescription }) {
 
 
     const jsonContent = JSON.parse(response.text)
+
 
     const pdfBuffer = await generatePdfFromHtml(jsonContent.html)
 

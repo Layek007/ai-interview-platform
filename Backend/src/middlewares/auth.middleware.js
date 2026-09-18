@@ -12,10 +12,13 @@ async function authUser(req, res, next) {
             message: "Token not provided."
         })
     }
-
+   
+     console.log("Checking token blacklist...")
     const isTokenBlacklisted = await tokenBlacklistModel.findOne({
         token
     })
+
+    console.log("Blaclklist check completed")
 
     if (isTokenBlacklisted) {
         return res.status(401).json({
