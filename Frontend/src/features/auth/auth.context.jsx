@@ -1,22 +1,31 @@
-import { createContext,useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { getMe } from "./services/auth.api";
 
+// eslint-disable-next-line react-refresh/only-export-components
+export const AuthContext = createContext();
 
-export const AuthContext = createContext()
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        const checkUser = async () => {
+            try {
+                const response = await getMe();
+                setUser(response.user);
+            } catch  {
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-export const AuthProvider = ({ children }) => { 
-
-    const [user, setUser] = useState(null)
-    const [loading, setLoading] = useState(true)
-
-    
-
+        checkUser();
+    }, []);
 
     return (
-        <AuthContext.Provider value={{user,setUser,loading,setLoading}} >
+        <AuthContext.Provider value={{ user, setUser, loading, setLoading }}>
             {children}
         </AuthContext.Provider>
-    )
-
-    
-}
+    );
+};

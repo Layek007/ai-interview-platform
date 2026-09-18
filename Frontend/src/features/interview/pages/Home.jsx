@@ -5,17 +5,29 @@ import { useNavigate } from 'react-router'
 
 const Home = () => {
 
-    const { loading, generateReport,reports } = useInterview()
-    const [ jobDescription, setJobDescription ] = useState("")
-    const [ selfDescription, setSelfDescription ] = useState("")
-    const resumeInputRef = useRef()
+    const { loading, generateReport, reports } = useInterview()
+const [jobDescription, setJobDescription] = useState("")
+const [selfDescription, setSelfDescription] = useState("")
+
+const [jobRole, setJobRole] = useState("Full Stack Developer")
+const [experienceLevel, setExperienceLevel] = useState("Fresher")
+const [difficulty, setDifficulty] = useState("Medium")
+
+const resumeInputRef = useRef()
 
     const navigate = useNavigate()
 
     const handleGenerateReport = async () => {
         const resumeFile = resumeInputRef.current.files[ 0 ]
-        const data = await generateReport({ jobDescription, selfDescription, resumeFile })
-        navigate(`/interview/${data._id}`)
+       const data = await generateReport({
+              jobDescription,
+              selfDescription,
+              resumeFile,
+             jobRole,
+          experienceLevel,
+         difficulty
+})
+        navigate(`/interview/${data.interviewReport._id}`)
     }
 
     if (loading) {
@@ -56,9 +68,62 @@ const Home = () => {
                         />
                         <div className='char-counter'>0 / 5000 chars</div>
                     </div>
+                 
+                    {/* Job Role */}
+<div className="selection-section">
+    <label className="section-label">Job Role</label>
 
-                    {/* Vertical Divider */}
-                    <div className='panel-divider' />
+    <select
+        value={jobRole}
+        onChange={(e) => setJobRole(e.target.value)}
+        className="panel-select"
+    >
+        <option value="Full Stack Developer">Full Stack Developer</option>
+        <option value="Frontend Developer">Frontend Developer</option>
+        <option value="Backend Developer">Backend Developer</option>
+        <option value="Software Engineer">Software Engineer</option>
+        <option value="Data Analyst">Data Analyst</option>
+        <option value="DevOps Engineer">DevOps Engineer</option>
+    </select>
+</div>
+
+{/* Experience Level */}
+<div className="selection-section">
+    <label className="section-label">Experience Level</label>
+
+    <select
+        value={experienceLevel}
+        onChange={(e) => setExperienceLevel(e.target.value)}
+        className="panel-select"
+    >
+        <option value="Fresher">Fresher</option>
+        <option value="0-2 Years">0-2 Years</option>
+        <option value="2-5 Years">2-5 Years</option>
+        <option value="5+ Years">5+ Years</option>
+    </select>
+</div>
+
+{/* Difficulty */}
+<div className="selection-section">
+    <label className="section-label">Difficulty</label>
+
+    <select
+        value={difficulty}
+        onChange={(e) => setDifficulty(e.target.value)}
+        className="panel-select"
+    >
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+    </select>
+</div>
+
+{/* Vertical Divider */}
+<div className="panel-divider" />
+
+
+
+                   
 
                     {/* Right Panel - Profile */}
                     <div className='panel panel--right'>

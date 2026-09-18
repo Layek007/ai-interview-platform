@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import '../style/interview.scss'
+import { useParams } from "react-router-dom";
+import "../style/interview.scss";
 import { useInterview } from '../hooks/useInterview.js'
-import { useNavigate, useParams } from 'react-router'
+
 
 
 
@@ -63,10 +64,9 @@ const Interview = () => {
     const { interviewId } = useParams()
 
     useEffect(() => {
-        if (interviewId) {
-            getReportById(interviewId)
-        }
-    }, [ interviewId ])
+    getReportById(interviewId)
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+}, [interviewId])
 
 
 
@@ -155,6 +155,40 @@ const Interview = () => {
                             </div>
                         </section>
                     )}
+                    {/* Professional Assessment Summary */}
+<section className="assessment-summary">
+  <div className="content-header">
+    <h2>Professional Assessment Summary</h2>
+    <span className="content-header__count">AI Generated</span>
+  </div>
+
+  <div className="assessment-summary__grid">
+    <div className="assessment-card">
+      <span className="assessment-card__label">Match Score</span>
+      <strong>{report.matchScore}%</strong>
+    </div>
+
+    <div className="assessment-card">
+      <span className="assessment-card__label">Technical Questions</span>
+      <strong>{report.technicalQuestions.length}</strong>
+    </div>
+
+    <div className="assessment-card">
+      <span className="assessment-card__label">Behavioral Questions</span>
+      <strong>{report.behavioralQuestions.length}</strong>
+    </div>
+
+    <div className="assessment-card">
+      <span className="assessment-card__label">Skill Gaps</span>
+      <strong>{report.skillGaps.length}</strong>
+    </div>
+
+    <div className="assessment-card">
+      <span className="assessment-card__label">Preparation Plan</span>
+      <strong>{report.preparationPlan.length} Days</strong>
+    </div>
+  </div>
+</section>
                 </main>
 
                 <div className='interview-divider' />

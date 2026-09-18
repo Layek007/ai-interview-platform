@@ -15,11 +15,25 @@ export const useInterview = () => {
 
     const { loading, setLoading, report, setReport, reports, setReports } = context
 
-    const generateReport = async ({ jobDescription, selfDescription, resumeFile }) => {
+   const generateReport = async ({
+    jobDescription,
+    selfDescription,
+    resumeFile,
+    jobRole,
+    experienceLevel,
+    difficulty
+}) => {
         setLoading(true)
         let response = null
         try {
-            response = await generateInterviewReport({ jobDescription, selfDescription, resumeFile })
+          response = await generateInterviewReport({
+    jobDescription,
+    selfDescription,
+    resumeFile,
+    jobRole,
+    experienceLevel,
+    difficulty
+})
             setReport(response.interviewReport)
         } catch (error) {
             console.log(error)
@@ -27,7 +41,7 @@ export const useInterview = () => {
             setLoading(false)
         }
 
-        return response.interviewReport
+        return response
     }
 
     const getReportById = async (interviewId) => {
@@ -79,12 +93,13 @@ export const useInterview = () => {
     }
 
     useEffect(() => {
-        if (interviewId) {
-            getReportById(interviewId)
-        } else {
-            getReports()
-        }
-    }, [ interviewId ])
+    if (interviewId) {
+        getReportById(interviewId)
+    } else {
+        getReports()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [interviewId])
 
     return { loading, report, reports, generateReport, getReportById, getReports, getResumePdf }
 
