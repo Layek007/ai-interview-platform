@@ -30,6 +30,7 @@ app.use("/api/auth", authRouter)
 app.use("/api/interview", interviewRouter)
 
 
+console.log("AUTH ROUTER LOADED:", !!authRouter)
 
 module.exports = app
 
