@@ -30,7 +30,10 @@ app.use("/api/auth", authRouter)
 app.use("/api/interview", interviewRouter)
 
 
-console.log("AUTH ROUTER LOADED:", !!authRouter)
+console.log(
+  "AUTH ROUTES:",
+  authRouter.stack.map(route => route.route?.path)
+)
 
 module.exports = app
 
