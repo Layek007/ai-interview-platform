@@ -3,6 +3,10 @@ const cookieParser = require("cookie-parser")
 const cors = require("cors")
 
 const app = express()
+app.get("/health", (req, res) => {
+    res.status(200).json({ status: "ok" })
+})
+
 
 app.use(express.json())
 app.use(cookieParser())
