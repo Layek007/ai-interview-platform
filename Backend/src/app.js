@@ -28,6 +28,13 @@ app.get("/api/test", (req, res) => {
     res.status(200).json({ status: "api works" })
 })
 
+app.get("/api/auth/test-direct", (req, res) => {
+    res.status(200).json({ status: "direct auth path works" })
+})
+
+app.use("/api/auth", authRouter)
+app.use("/api/interview", interviewRouter)
+
 
 /* using all the routes here */
 app.use("/api/auth", authRouter)
