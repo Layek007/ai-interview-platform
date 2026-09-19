@@ -35,5 +35,7 @@ authRouter.get("/logout", authController.logoutUserController)
  */
 authRouter.get("/get-me", authMiddleware.authUser, authController.getMeController)
 
-
+authRouter.get("/test", (req, res) => {
+    res.status(200).json({ status: "auth router works" })
+})
 module.exports = authRouter
