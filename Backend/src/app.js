@@ -24,6 +24,10 @@ app.options(/.*/, cors(corsOptions))
 const authRouter = require("./routes/auth.routes")
 const interviewRouter = require("./routes/interview.routes")
 
+app.get("/api/test", (req, res) => {
+    res.status(200).json({ status: "api works" })
+})
+
 
 /* using all the routes here */
 app.use("/api/auth", authRouter)
