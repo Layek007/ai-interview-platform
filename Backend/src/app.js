@@ -3,6 +3,14 @@ const cookieParser = require("cookie-parser")
 const cors = require("cors")
 
 const app = express()
+
+app.use((req, res, next) => {
+    console.log("INCOMING PATH:", req.method, req.originalUrl)
+    next()
+})
+
+
+
 app.get("/health", (req, res) => {
     res.status(200).json({ status: "ok" })
 })
